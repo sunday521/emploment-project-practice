@@ -30,7 +30,7 @@ document.querySelector("#btn-register").addEventListener("click", async () => {
         password,
       },
     });
-    showToast(res.data.message);
+    showToast(res.message);
   } catch (err) {
     showToast(err.response.data.message);
   }

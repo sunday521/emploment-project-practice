@@ -33,7 +33,7 @@ document.querySelector("#btn-login").addEventListener("click", async () => {
     const {
       message,
       data: { username: uname, token },
-    } = res.data;
+    } = res;
     // 这里username和上面的冲突，需要重命名一下
     // console.log(message, uname, token);
     showToast(message);

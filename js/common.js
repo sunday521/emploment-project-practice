@@ -76,8 +76,9 @@ axios.interceptors.response.use(
   function (response) {
     // 功能7-2：响应拦截器-数据剥离
     // 2xx 范围内的状态码都会触发该函数
-    // 在响应返回前，去掉一层data
-    return response;
+    // 在响应返回前，去掉一层data（注意只影响响应成功的返回结果）
+    // console.dir(response);
+    return response.data;
   },
   function (error) {
     // 功能7-3：响应拦截器-统一处理token失效

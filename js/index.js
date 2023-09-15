@@ -17,7 +17,7 @@ async function getData() {
   const res = await axios({
     url: "/dashboard",
   });
-  const { groupData, overview, provinceData, salaryData, year } = res.data.data;
+  const { groupData, overview, provinceData, salaryData, year } = res.data;
   // 功能6-1：首页-渲染概览数据
   renderOverview(overview);
   //   try {
