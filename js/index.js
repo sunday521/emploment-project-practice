@@ -17,9 +17,6 @@ async function getData() {
   try {
     const res = await axios({
       url: "/dashboard",
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
     });
     // console.log(res.data.data);
     const { groupData, overview, provinceData, salaryData, year } =

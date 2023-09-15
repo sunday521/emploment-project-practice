@@ -52,3 +52,38 @@ function logout() {
     }, 1500);
   });
 }
+
+// 功能7：axios拦截器配置
+// 将请求和响应的公共逻辑配置在axios拦截器中，简化代码
+// 添加请求拦截器
+axios.interceptors.request.use(
+  function (config) {
+    // 在发送请求之前做些什么
+    // 功能7-1：请求拦截器-统一添加token
+    // console.dir(config);
+    const token = localStorage.getItem("token");
+    token && (config.headers["Authorization"] = token);
+    return config;
+  },
+  function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  }
+);
+
+// 添加响应拦截器
+axios.interceptors.response.use(
+  function (response) {
+    // 功能7-2：响应拦截器-数据剥离
+    // 2xx 范围内的状态码都会触发该函数
+    // 在响应返回前，去掉一层data
+    return response;
+  },
+  function (error) {
+    // 功能7-3：响应拦截器-统一处理token失效
+    // 超出 2xx 范围的状态码都会触发该函数
+    // 当请求头中的token失效时（响应状态码401），阻止用户获取数据，清空本地缓存中的用户数据，并让其重新登录
+    // console.dir(err.response);
+    return Promise.reject(error);
+  }
+);
