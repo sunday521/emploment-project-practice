@@ -12,3 +12,13 @@ axios.defaults.baseURL = "https://hmajax.itheima.net";
 // }).then((res) => {
 //   console.log(res.data);
 // });
+
+// 抽取轻提示函数
+function showToast(msg) {
+  const myToast = new bootstrap.Toast(document.querySelector(".my-toast"));
+  document.querySelector(".toast-body").innerHTML = msg;
+  myToast.show();
+}
+
+// 测试是否正常使用
+// showToast("注册成功！");
