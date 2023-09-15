@@ -40,3 +40,15 @@ function renderUsername() {
   document.querySelector(".username").innerHTML =
     localStorage.getItem("username") || "未知用户";
 }
+
+// 退出登录
+function logout() {
+  document.querySelector("#logout").addEventListener("click", function () {
+    localStorage.removeItem("username");
+    localStorage.removeItem("token");
+    showToast("退出成功！");
+    setTimeout(() => {
+      location.href = "./login.html";
+    }, 1500);
+  });
+}
