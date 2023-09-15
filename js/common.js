@@ -96,3 +96,6 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// 功能8：测试推送到远程仓库
+console.log("加了一个大大的功能~");
