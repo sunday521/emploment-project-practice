@@ -34,3 +34,9 @@ function checkLogin() {
     }, 1500);
   }
 }
+
+// 用户名渲染
+function renderUsername() {
+  document.querySelector(".username").innerHTML =
+    localStorage.getItem("username") || "未知用户";
+}
