@@ -84,6 +84,14 @@ axios.interceptors.response.use(
     // 超出 2xx 范围的状态码都会触发该函数
     // 当请求头中的token失效时（响应状态码401），阻止用户获取数据，清空本地缓存中的用户数据，并让其重新登录
     // console.dir(err.response);
+    if (error.response.status === 401) {
+      localStorage.removeItem("username");
+      localStorage.removeItem("token");
+      showToast("登录状态已过期，请重新登录！");
+      setTimeout(() => {
+        location.href = "./login.html";
+      }, 1500);
+    }
     return Promise.reject(error);
   }
 );
