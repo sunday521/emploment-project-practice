@@ -24,10 +24,20 @@ async function getData() {
     // console.log(res.data.data);
     const { groupData, overview, provinceData, salaryData, year } =
       res.data.data;
-    // 功能6-1：渲染概览数据
+    // 功能6-1：首页-渲染概览数据
     renderOverview(overview);
   } catch (err) {
-    console.dir(err.response.data);
+    // 功能6-2：首页-登录状态失效处理
+    // 当请求头中的token失效时（响应状态码401），阻止用户获取数据，清空本地缓存中的用户数据，并让其重新登录
+    // console.dir(err.response);
+    if (err.response.status === 401) {
+      localStorage.removeItem("username");
+      localStorage.removeItem("token");
+      showToast("登录状态已过期，请重新登录！");
+      setTimeout(() => {
+        location.href = "./login.html";
+      }, 1500);
+    }
   }
 }
 
