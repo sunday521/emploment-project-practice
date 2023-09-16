@@ -27,6 +27,8 @@ async function getData() {
   renderSalaryChart(salaryData);
   // 功能6-5：首页-分组薪资-柱状图绘制
   renderGroupChart(groupData);
+  // 功能6-6：首页-男女薪资分布-饼状图绘制
+  renderSalaryPieChart(salaryData);
   //   try {
   //   } catch (err) {
   //     // 功能6-2：首页-登录状态失效处理
@@ -343,4 +345,71 @@ function renderGroupChart(groupData) {
       myChart.setOption(option);
     }
   });
+}
+
+function renderSalaryPieChart(salaryData) {
+  // console.log("男女薪资分布数据", salaryData);
+  const myChart = echarts.init(document.querySelector("#gender"));
+  const option = {
+    // 设置多个标题，在不同位置上
+    title: [
+      {
+        text: "男女薪资分布",
+        left: "5%",
+        top: "5%",
+        textStyle: {
+          fontSize: 16,
+        },
+      },
+      {
+        text: "男生",
+        left: "50%",
+        top: "45%",
+        textAlign: "center",
+        textStyle: {
+          fontSize: 12,
+        },
+      },
+      {
+        text: "女生",
+        left: "50%",
+        top: "85%",
+        textAlign: "center",
+        textStyle: {
+          fontSize: 12,
+        },
+      },
+    ],
+    tooltip: {
+      trigger: "item",
+    },
+    color: ["#FDA224", "#5097FF", "#3ABCFA", "#34D39A"],
+    series: [
+      {
+        type: "pie",
+        radius: ["20%", "30%"],
+        // 饼图的中心（圆心）坐标
+        center: ["50%", "30%"],
+        data: salaryData.map((ele) => {
+          return {
+            name: ele.label,
+            value: ele.b_count,
+          };
+        }),
+      },
+      {
+        type: "pie",
+        radius: ["20%", "30%"],
+        // 饼图的中心（圆心）坐标
+        center: ["50%", "70%"],
+        data: salaryData.map((ele) => {
+          return {
+            name: ele.label,
+            value: ele.g_count,
+          };
+        }),
+      },
+    ],
+  };
+  myChart.setOption(option);
 }
