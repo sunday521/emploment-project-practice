@@ -23,6 +23,8 @@ async function getData() {
   renderOverview(overview);
   // 功能6-3：首页-薪资趋势-折线图绘制
   renderYearChart(year);
+  // 功能6-4：首页-薪资分布-饼状图绘制
+  renderSalaryChart(salaryData);
   //   try {
   //   } catch (err) {
   //     // 功能6-2：首页-登录状态失效处理
@@ -159,6 +161,72 @@ function renderYearChart(year) {
             ],
             global: false, // 缺省为 false
           },
+        },
+      },
+    ],
+  };
+  myChart.setOption(option);
+}
+
+function renderSalaryChart(salaryData) {
+  // console.log("薪资分布数据", salaryData);
+  const myChart = echarts.init(document.querySelector("#salary"));
+  const option = {
+    title: {
+      text: "班级薪资分布",
+      left: "5%",
+      top: "5%",
+    },
+    tooltip: {
+      trigger: "item",
+    },
+    // 图例组件
+    legend: {
+      bottom: "5%",
+      left: "center",
+    },
+    // 颜色列表
+    color: ["#FDA224", "#5097FF", "#3ABCFA", "#34D39A"],
+    // 系列
+    series: [
+      {
+        // 系列名称，在提示框中显示
+        name: "薪资",
+        // 系列类型，pie饼状图
+        type: "pie",
+        radius: ["55%", "70%"],
+        // 避免标签间相互折叠覆盖
+        avoidLabelOverlap: true,
+        // 系列数据
+        data: salaryData.map((ele) => {
+          return {
+            name: ele.label,
+            value: ele.g_count + ele.b_count,
+          };
+        }),
+        // 系列项样式
+        itemStyle: {
+          borderRadius: 10,
+          borderColor: "#fff",
+          borderWidth: 4,
+        },
+        // 高亮样式，鼠标悬停时的样式
+        emphasis: {
+          label: {
+            show: false,
+            fontSize: 40,
+            fontWeight: "bold",
+          },
+        },
+        // 标签
+        label: {
+          show: true,
+          position: "outside",
+        },
+        // 标签线
+        labelLine: {
+          // 显示标签线（仅在label-outside下生效）
+          show: true,
         },
       },
     ],
