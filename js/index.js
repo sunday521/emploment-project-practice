@@ -25,6 +25,8 @@ async function getData() {
   renderYearChart(year);
   // 功能6-4：首页-薪资分布-饼状图绘制
   renderSalaryChart(salaryData);
+  // 功能6-5：首页-分组薪资-柱状图绘制
+  renderGroupChart(groupData);
   //   try {
   //   } catch (err) {
   //     // 功能6-2：首页-登录状态失效处理
@@ -232,4 +234,113 @@ function renderSalaryChart(salaryData) {
     ],
   };
   myChart.setOption(option);
+}
+
+function renderGroupChart(groupData) {
+  // console.log("分组薪资数据", groupData);
+  const myChart = echarts.init(document.querySelector("#lines"));
+  const option = {
+    tooltip: {
+      show: true,
+    },
+    grid: {
+      left: 70,
+      top: 30,
+      right: 30,
+      bottom: 50,
+    },
+    xAxis: {
+      type: "category",
+      data: groupData["1"].map((ele) => ele.name),
+      axisLine: {
+        lineStyle: {
+          color: "#d1d1d1",
+          type: "dashed",
+        },
+      },
+      axisLabel: {
+        color: "#999",
+      },
+    },
+    yAxis: {
+      type: "value",
+      splitLine: {
+        lineStyle: {
+          type: "dashed",
+        },
+      },
+      axisLine: {
+        lineStyle: {
+          color: "#d1d1d1",
+        },
+      },
+    },
+    series: [
+      {
+        name: "期望薪资",
+        data: groupData["1"].map((ele) => ele.hope_salary),
+        type: "bar",
+        itemStyle: {
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              {
+                offset: 0,
+                color: "#34D39A", // 0% 处的颜色
+              },
+              {
+                offset: 1,
+                color: "rgba(52,211,154,0.2)", // 100% 处的颜色
+              },
+            ],
+          },
+        },
+      },
+      {
+        name: "实际薪资",
+        data: groupData["1"].map((ele) => ele.salary),
+        type: "bar",
+        itemStyle: {
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              {
+                offset: 0,
+                color: "#499FEE", // 0% 处的颜色
+              },
+              {
+                offset: 1,
+                color: "rgba(73,159,238,0.2)", // 100% 处的颜色
+              },
+            ],
+          },
+        },
+      },
+    ],
+  };
+  myChart.setOption(option);
+
+  // 动态切换
+  const btnGroup = document.querySelector("#btns");
+  btnGroup.addEventListener("click", function (e) {
+    if (e.target.tagName === "BUTTON") {
+      // 切换按钮
+      btnGroup.querySelector(".btn-blue").classList.remove("btn-blue");
+      e.target.classList.add("btn-blue");
+      // 切换数据
+      const i = e.target.innerText;
+      option.xAxis.data = groupData[i].map((ele) => ele.name);
+      option.series[0].data = groupData[i].map((ele) => ele.hope_salary);
+      option.series[1].data = groupData[i].map((ele) => ele.salary);
+      myChart.setOption(option);
+    }
+  });
 }
