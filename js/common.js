@@ -98,4 +98,4 @@ axios.interceptors.response.use(
 );
 
 // 功能8：测试推送到远程仓库
-console.log("加了一个大大的功能~");
+// console.log("加了一个大大的功能~");
