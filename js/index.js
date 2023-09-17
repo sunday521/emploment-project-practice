@@ -21,6 +21,7 @@ async function getData() {
   const { groupData, overview, provinceData, salaryData, year } = res.data;
   // 功能6-1：首页-渲染概览数据
   renderOverview(overview);
+  // echart如何使用：http://www.it028.com/echarts-setup.html
   // 功能6-3：首页-薪资趋势-折线图绘制
   renderYearChart(year);
   // 功能6-4：首页-薪资分布-饼状图绘制
@@ -29,6 +30,8 @@ async function getData() {
   renderGroupChart(groupData);
   // 功能6-6：首页-男女薪资分布-饼状图绘制
   renderSalaryPieChart(salaryData);
+  // 功能6-7：首页-籍贯分布-地图绘制
+  renderMapChart(provinceData);
   //   try {
   //   } catch (err) {
   //     // 功能6-2：首页-登录状态失效处理
@@ -224,13 +227,13 @@ function renderSalaryChart(salaryData) {
         },
         // 标签
         label: {
-          show: true,
+          show: false,
           position: "outside",
         },
         // 标签线
         labelLine: {
           // 显示标签线（仅在label-outside下生效）
-          show: true,
+          show: false,
         },
       },
     ],
@@ -408,6 +411,123 @@ function renderSalaryPieChart(salaryData) {
             value: ele.g_count,
           };
         }),
+      },
+    ],
+  };
+  myChart.setOption(option);
+}
+
+function renderMapChart(provinceData) {
+  console.log("籍贯分布数据", provinceData);
+  // 待渲染的数据
+  const dataList = [
+    { name: "南海诸岛", value: 0 },
+    { name: "北京", value: 0 },
+    { name: "天津", value: 0 },
+    { name: "上海", value: 0 },
+    { name: "重庆", value: 0 },
+    { name: "河北", value: 0 },
+    { name: "河南", value: 0 },
+    { name: "云南", value: 0 },
+    { name: "辽宁", value: 0 },
+    { name: "黑龙江", value: 0 },
+    { name: "湖南", value: 0 },
+    { name: "安徽", value: 0 },
+    { name: "山东", value: 0 },
+    { name: "新疆", value: 0 },
+    { name: "江苏", value: 0 },
+    { name: "浙江", value: 0 },
+    { name: "江西", value: 0 },
+    { name: "湖北", value: 0 },
+    { name: "广西", value: 0 },
+    { name: "甘肃", value: 0 },
+    { name: "山西", value: 0 },
+    { name: "内蒙古", value: 0 },
+    { name: "陕西", value: 0 },
+    { name: "吉林", value: 0 },
+    { name: "福建", value: 0 },
+    { name: "贵州", value: 0 },
+    { name: "广东", value: 0 },
+    { name: "青海", value: 0 },
+    { name: "西藏", value: 0 },
+    { name: "四川", value: 0 },
+    { name: "宁夏", value: 0 },
+    { name: "海南", value: 0 },
+    { name: "台湾", value: 0 },
+    { name: "香港", value: 0 },
+    { name: "澳门", value: 0 },
+  ];
+  // 处理待渲染的数据
+  dataList.forEach((ele) => {
+    // 找到包含name的对应对象，把value赋给它
+    const p = provinceData.find((v) => v.name.includes(ele.name));
+    p && (ele.value = p.value);
+  });
+  // console.log(dataList);
+
+  const myChart = echarts.init(document.querySelector("#map"));
+  const option = {
+    title: {
+      text: "籍贯分布",
+      top: "5%",
+      left: "5%",
+      textStyle: {
+        fontSize: 16,
+      },
+    },
+    tooltip: {
+      trigger: "item",
+      formatter: "{b}: {c} 位学员",
+      borderColor: "transparent",
+      backgroundColor: "rgba(0,0,0,0.5)",
+      textStyle: {
+        color: "#fff",
+      },
+    },
+    visualMap: {
+      min: 0,
+      max: 6,
+      left: "left",
+      bottom: "20",
+      text: ["6", "0"],
+      inRange: {
+        color: ["#ffffff", "#0075F0"],
+      },
+      show: true,
+      left: 40,
+    },
+    geo: {
+      map: "china",
+      roam: false,
+      zoom: 1.0,
+      label: {
+        normal: {
+          show: true,
+          fontSize: "10",
+          color: "rgba(0,0,0,0.7)",
+        },
+      },
+      itemStyle: {
+        normal: {
+          borderColor: "rgba(0, 0, 0, 0.2)",
+          color: "#e0ffff",
+        },
+        emphasis: {
+          areaColor: "#34D39A",
+          shadowOffsetX: 0,
+          shadowOffsetY: 0,
+          shadowBlur: 20,
+          borderWidth: 0,
+          shadowColor: "rgba(0, 0, 0, 0.5)",
+        },
+      },
+    },
+    series: [
+      {
+        name: "籍贯分布",
+        type: "map",
+        geoIndex: 0,
+        data: dataList,
       },
     ],
   };
