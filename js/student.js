@@ -60,6 +60,17 @@ document.querySelector("#openModal").addEventListener("click", function () {
   // 功能11-2：重置模态框
   formDom.reset();
   modalTitle.innerText = "添加学生";
+
+  // 功能14：BUG修复
+  // 每次打开添加模态框时，移除自定义属性，防止和修改搞混
+  modalDom.dataset.id = "";
+  // 每次打开添加模态框时，让城市和地区列表清空
+  document.querySelector(
+    "[name=city]"
+  ).innerHTML = `<option value="">--城市--</option>`;
+  document.querySelector(
+    "[name=area]"
+  ).innerHTML = `<option value="">--地区--</option>`;
 });
 
 // 功能11-3：省市区联动
