@@ -131,3 +131,16 @@ async function addStudent() {
 document.querySelector("#submit").addEventListener("click", function () {
   addStudent();
 });
+
+// 功能12：删除学生
+async function delStudent(id) {
+  await axios.delete(`/students/${id}`);
+  getData();
+}
+document.querySelector(".list").addEventListener("click", function (e) {
+  if (e.target.classList.contains("bi-trash")) {
+    console.log("删除");
+    const id = e.target.parentNode.parentNode.dataset.id;
+    delStudent(id);
+  }
+});
